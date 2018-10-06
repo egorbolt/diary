@@ -1,2 +1,2 @@
 # diary
-This repository contains source code of the application "Diary" for Mobile Development course.
+This repository contains source code of the application "Motivational diary" for Mobile Development course.

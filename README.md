@@ -3,6 +3,7 @@
 
 # Development team
 * Boldyrev Egor, 16201  
-* Galieva Ayya, 16201  
+* Galieva Ayya, 16201
+* Ershov Sergey, 16201
 * Kutergina Anna, 16202  
 * Orlovsky Andrey, 16204  

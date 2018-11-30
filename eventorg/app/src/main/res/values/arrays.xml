@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="prof_list">
+        <item>Аниматор</item>
+        <item>Бармен</item>
+        <item>Видеограф</item>
+        <item>Визажист</item>
+        <item>Водитель</item>
+        <item>Декоратор</item>
+        <item>Диджей</item>
+        <item>Звукорежиссер</item>
+        <item>Кондитер</item>
+        <item>Музыкант</item>
+        <item>Официант</item>
+        <item>Парикмахер</item>
+        <item>Певец</item>
+        <item>Пекарь</item>
+        <item>Переводчик</item>
+        <item>Повар</item>
+        <item>Режиссер</item>
+        <item>Стилист</item>
+        <item>Тамада</item>
+        <item>Фаерщик</item>
+        <item>Флорист</item>
+        <item>Фотограф</item>
+        <item>Хореограф</item>
+        <item>Художник</item>
+        <item>Швея</item>
+        <item>Ювелир</item>
+    </array>
+</resources>

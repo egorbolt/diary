@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_medium">28sp</dimen>
+    <dimen name="title_small">18sp</dimen>
+    <dimen name="scroll_participants">150dp</dimen>
+</resources>

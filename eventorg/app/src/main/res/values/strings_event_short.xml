@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="name_event">Name event</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End Date</string>
+    <string name="org">Я - организатор</string>
+    <string name="part">Я - участник</string>
+</resources>

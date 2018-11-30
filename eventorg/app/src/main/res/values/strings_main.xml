@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_page">Моя страница</string>
+    <string name="my_events">Мои события</string>
+    <string name="notifications">Уведомления</string>
+    <string name="exit">Выйти</string>
+</resources>

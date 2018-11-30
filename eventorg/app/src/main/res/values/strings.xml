@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Eventor</string>
+    <string name="log_tag">EVENTOR_LOG_TAG</string>
+    <string name="pref_key">EVENTOR_PREFS</string>
+    <string name="name">Name</string>
+
+
+</resources>

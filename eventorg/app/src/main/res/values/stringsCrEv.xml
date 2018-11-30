@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="titleCrEv">Create new event</string>
+    <string name="titleEdit">Edit event</string>
+    <string name="eventNameText">Event name:</string>
+    <string name="startDateText">Start date:</string>
+    <string name="endDateText">End date:</string>
+    <string name="canselButton">Cancel</string>
+    <string name="continueButton">Continue</string>
+    <string name="deleteButton">Delete Event</string>
+    <string name="toText">to:</string>
+    <string name="fromText">from:</string>
+    <string name="professionText">Profession</string>
+    <string name="needsText">Needs:</string>
+    <string name="add_position_button">add position</string>
+    <string name="add_event">Add event</string>
+    <string name="infoText">Info:</string>
+</resources>

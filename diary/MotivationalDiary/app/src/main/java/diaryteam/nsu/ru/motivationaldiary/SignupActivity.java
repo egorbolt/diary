@@ -67,11 +67,11 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        UserInfo userInfo = new UserInfo(null, _name, _email, _password);
+        UserInfo userInfo = new UserInfo(null, _name, _email, _password.hashCode());
 
-        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), createJSON(_name, _email, _password).toString());
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), createJSON(_name, _email, _password.hashCode()).toString());
         Request request = new Request.Builder()
-                .url("http://localhost:8080/signup")
+                .url("http://localhost:8080/registration")
                 .post(body)
                 .build();
 
@@ -103,7 +103,7 @@ public class SignupActivity extends AppCompatActivity {
             email.setError(null);
         }
 
-        if (_password.isEmpty() || _passwordConfirm.isEmpty() || !passwordConfirm.equals(password)) {
+        if (_password.isEmpty() || _passwordConfirm.isEmpty() || !_passwordConfirm.equals(_password)) {
             password.setError("password confirmation does not match");
             passwordConfirm.setError("password confirmation does not match");
             valid = false;
@@ -115,21 +115,24 @@ public class SignupActivity extends AppCompatActivity {
         return valid;
     }
 
-    private JSONObject createJSON(String name, String email, String password) {
+    private JSONObject createJSON(String name, String email, int hashPassword) {
         JSONObject json = new JSONObject();
         try {
-            json.put("name", name);
+            json.put("login", name);
             json.put("email", email);
-            json.put("password", password);
+            json.put("hashPassword", hashPassword);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return json;
     }
 
-    private void handleResponse(Response response) {
-        if (response.code() == 400) {
-            Toast.makeText(SignupActivity.this, "This email address is already signed up", Toast.LENGTH_SHORT).show();
+    private void handleResponse(Response response) throws IOException {
+        if (response.code() == 401) {
+            Toast.makeText(SignupActivity.this, response.body().string(), Toast.LENGTH_SHORT).show();
+        }
+        if (response.code() == 404) {
+            Toast.makeText(SignupActivity.this, "404 :c", Toast.LENGTH_SHORT).show();
         }
         if (response.code() == 200) {
             Toast.makeText(SignupActivity.this, "Registration was successful", Toast.LENGTH_SHORT).show();

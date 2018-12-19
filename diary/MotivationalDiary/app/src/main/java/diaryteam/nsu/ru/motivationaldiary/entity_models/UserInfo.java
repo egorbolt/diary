@@ -6,13 +6,13 @@ public class UserInfo implements Serializable {
     private String userId;
     private String name;
     private String email;
-    private String password;
+    private int hashPassword;
 
-    public UserInfo(String userId, String name, String email, String password) {
+    public UserInfo(String userId, String name, String email, int hashPssword) {
         this.userId = userId;
         this.name = name;
         this.email =  email;
-        this.password = password;
+        this.hashPassword = hashPssword;
     }
 
     public String getUserId() {
@@ -39,11 +39,11 @@ public class UserInfo implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public int getHashPassword() {
+        return hashPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setHashPassword(int hashPassword) {
+        this.hashPassword = hashPassword;
     }
 }

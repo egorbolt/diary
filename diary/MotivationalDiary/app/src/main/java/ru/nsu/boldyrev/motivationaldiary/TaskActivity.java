@@ -4,17 +4,31 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TaskActivity extends AppCompatActivity {
     private EditText mEtTitle;
     private EditText mEtContent;
     private String mTaskFileName;
     private Task mLoadedTask;
-
+    private ArrayList<String> mEtItemList;
+    private ArrayAdapter<String> ItemListAdapter;
+    private EditText mEtSubtask;
+    private Button mEtButton;
+    private ListView mEtListView;
+    private ArrayList<Boolean> mEtItemListCheckBoxes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,16 +37,59 @@ public class TaskActivity extends AppCompatActivity {
 
         mEtTitle = (EditText) findViewById(R.id.task_et_title);
         mEtContent = (EditText) findViewById(R.id.task_et_content);
+        mEtListView = (ListView) findViewById(R.id.task_et_listview);
+        mEtSubtask = (EditText) findViewById(R.id.task_et_subtask);
+        mEtButton = (Button) findViewById(R.id.task_et_button);
 
         mTaskFileName = getIntent().getStringExtra("TASK_FILE");
         if (mTaskFileName != null && !mTaskFileName.isEmpty()) {
             mLoadedTask = Utilities.getTaskByName(this, mTaskFileName);
 
+            //Если задача была уже создана, то подгружаем её
             if (mLoadedTask != null) {
                 mEtTitle.setText(mLoadedTask.getnTitle());
                 mEtContent.setText(mLoadedTask.getnContent());
+                mEtItemList = mLoadedTask.getnSubtasks();
+                mEtItemListCheckBoxes = mLoadedTask.getnCheckboxes();
+
+                /*Проблема: если мы отметили, что подзадача выполнена (поставили галочку) и сохранили задачу,
+                то когда мы её заново откроем, галочки пропадут НЕСМОТРЯ НА ТО, что состояние галочек будет сохранено
+                корректно. Т.е. завершённые подзадачи сохранились, но галочки не отобразились.
+                */
+
+                ItemListAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_list_item_multiple_choice, mEtItemList);
+
+                for (int i = 0; i < mEtItemListCheckBoxes.size(); i++) {
+                    boolean value = mEtItemListCheckBoxes.get(i);
+                    mEtListView.setItemChecked(i, value);
+                    ItemListAdapter.notifyDataSetChanged();
+                }
+
+                mEtListView.setAdapter(ItemListAdapter);
+
             }
         }
+
+        //Если созданная задача - новая
+        if (mLoadedTask == null) {
+            mEtItemList = new ArrayList<>();
+            mEtItemListCheckBoxes = new ArrayList<>();
+        }
+
+        //Здесь происходит обработка выделения чекбокса сделанной подзадачи
+        ItemListAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_list_item_multiple_choice, mEtItemList);
+
+        View.OnClickListener buttonListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEtItemList.add(mEtSubtask.getText().toString());
+                mEtSubtask.setText("");
+                ItemListAdapter.notifyDataSetChanged();
+            }
+        };
+
+        mEtButton.setOnClickListener(buttonListener);
+        mEtListView.setAdapter(ItemListAdapter);
 
     }
 
@@ -67,10 +124,23 @@ public class TaskActivity extends AppCompatActivity {
             return;
         }
 
+        mEtItemListCheckBoxes = new ArrayList<>();
+
+        //Сохранение состояний подзадач (сделалана - галочка будет сохранена)
+        SparseBooleanArray checked = mEtListView.getCheckedItemPositions();
+        for (int i = 0; i < mEtItemList.size(); i++ ){
+            mEtItemListCheckBoxes.add(i, false);
+        }
+        for (int i = 0; i < checked.size(); i++) {
+            int key = checked.keyAt(i);
+            mEtItemListCheckBoxes.remove(key);
+            mEtItemListCheckBoxes.add(key, true);
+        }
+
         if (mLoadedTask == null) {
-            task = new Task(System.currentTimeMillis(), mEtTitle.getText().toString(), mEtContent.getText().toString());
+            task = new Task(System.currentTimeMillis(), mEtTitle.getText().toString(), mEtContent.getText().toString(), mEtItemList, mEtItemListCheckBoxes);
         } else {
-            task = new Task(mLoadedTask.getnDateTime(), mEtTitle.getText().toString(), mEtContent.getText().toString());
+            task = new Task(mLoadedTask.getnDateTime(), mEtTitle.getText().toString(), mEtContent.getText().toString(), mEtItemList, mEtItemListCheckBoxes);
         }
 
         if (Utilities.saveTask(this, task)) {

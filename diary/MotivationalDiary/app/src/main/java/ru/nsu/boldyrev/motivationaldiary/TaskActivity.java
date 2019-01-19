@@ -9,14 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TaskActivity extends AppCompatActivity {
     private EditText mEtTitle;
@@ -24,7 +22,7 @@ public class TaskActivity extends AppCompatActivity {
     private String mTaskFileName;
     private Task mLoadedTask;
     private ArrayList<String> mEtItemList;
-    private ArrayAdapter<String> ItemListAdapter;
+    private ArrayAdapter<String> itemListAdapter;
     private EditText mEtSubtask;
     private Button mEtButton;
     private ListView mEtListView;
@@ -33,6 +31,7 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_task);
 
         mEtTitle = (EditText) findViewById(R.id.task_et_title);
@@ -42,6 +41,8 @@ public class TaskActivity extends AppCompatActivity {
         mEtButton = (Button) findViewById(R.id.task_et_button);
 
         mTaskFileName = getIntent().getStringExtra("TASK_FILE");
+
+
         if (mTaskFileName != null && !mTaskFileName.isEmpty()) {
             mLoadedTask = Utilities.getTaskByName(this, mTaskFileName);
 
@@ -54,18 +55,20 @@ public class TaskActivity extends AppCompatActivity {
 
                 /*Проблема: если мы отметили, что подзадача выполнена (поставили галочку) и сохранили задачу,
                 то когда мы её заново откроем, галочки пропадут НЕСМОТРЯ НА ТО, что состояние галочек будет сохранено
-                корректно. Т.е. завершённые подзадачи сохранились, но галочки не отобразились.
+                корректно. Т.е. завершённые подзадачи сохранились, но галочки не отобразились. --Егор
                 */
 
-                ItemListAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_list_item_multiple_choice, mEtItemList);
+                /*Проблема заменилась на другую: теперь галочки отображаются в осответствии с содержимым mEtItemListCheckBoxes ,
+                однако это содержимое сохраняется неверно (у меня - все "true"). --Андрей
+                 */
+                itemListAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_list_item_multiple_choice, mEtItemList);
+                mEtListView.setAdapter(itemListAdapter);
 
                 for (int i = 0; i < mEtItemListCheckBoxes.size(); i++) {
                     boolean value = mEtItemListCheckBoxes.get(i);
                     mEtListView.setItemChecked(i, value);
-                    ItemListAdapter.notifyDataSetChanged();
+                    itemListAdapter.notifyDataSetChanged();
                 }
-
-                mEtListView.setAdapter(ItemListAdapter);
 
             }
         }
@@ -74,22 +77,23 @@ public class TaskActivity extends AppCompatActivity {
         if (mLoadedTask == null) {
             mEtItemList = new ArrayList<>();
             mEtItemListCheckBoxes = new ArrayList<>();
+            itemListAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_list_item_multiple_choice, mEtItemList);
         }
 
         //Здесь происходит обработка выделения чекбокса сделанной подзадачи
-        ItemListAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_list_item_multiple_choice, mEtItemList);
+        //itemListAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_list_item_multiple_choice, mEtItemList);
 
         View.OnClickListener buttonListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mEtItemList.add(mEtSubtask.getText().toString());
                 mEtSubtask.setText("");
-                ItemListAdapter.notifyDataSetChanged();
+                itemListAdapter.notifyDataSetChanged();
             }
         };
 
         mEtButton.setOnClickListener(buttonListener);
-        mEtListView.setAdapter(ItemListAdapter);
+
 
     }
 

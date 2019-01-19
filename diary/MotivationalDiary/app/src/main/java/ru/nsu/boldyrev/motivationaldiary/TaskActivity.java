@@ -78,10 +78,12 @@ public class TaskActivity extends AppCompatActivity {
             mEtItemList = new ArrayList<>();
             mEtItemListCheckBoxes = new ArrayList<>();
             itemListAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_list_item_multiple_choice, mEtItemList);
+
+            mEtListView.setAdapter(itemListAdapter);
         }
 
         //Здесь происходит обработка выделения чекбокса сделанной подзадачи
-        //itemListAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_list_item_multiple_choice, mEtItemList);
+       // itemListAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_list_item_multiple_choice, mEtItemList);
 
         View.OnClickListener buttonListener = new View.OnClickListener() {
             @Override
@@ -94,7 +96,7 @@ public class TaskActivity extends AppCompatActivity {
 
         mEtButton.setOnClickListener(buttonListener);
 
-
+      //  mEtListView.setAdapter(itemListAdapter);
     }
 
     @Override

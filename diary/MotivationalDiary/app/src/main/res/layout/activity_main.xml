@@ -8,8 +8,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <ListView
         android:id="@+id/main_listView_tasks"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="451dp" />
+
+    <Button
+        android:id="@+id/main_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onMotivateButtonClick"
+        android:text="Motivate me!" />
+
 </LinearLayout>

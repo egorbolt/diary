@@ -45,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void onMotivateButtonClick(View view) {
+        Intent intent = new Intent(this, MotivationActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
